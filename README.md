@@ -1,5 +1,6 @@
 # HCA Mini EHR - Healthcare Management System
 ## Capstone Project: ASP.NET Core + EF Core + SQL Server + LINQ
+This commit is added to demonstrate feature-branch and pull-request workflow as required by the Day-15 Mini Project.
 
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 ![.NET](https://img.shields.io/badge/.NET-8.0-blue)
