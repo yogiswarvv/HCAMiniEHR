@@ -58,6 +58,11 @@ public class LabOrderService
         if (string.IsNullOrWhiteSpace(labOrder.TestName))
             throw new ArgumentException("Test name is required.");
 
+        var appointment = await _context.Appointments.FindAsync(labOrder.AppointmentId);
+        if (appointment == null)
+            throw new InvalidOperationException($"Appointment with ID {labOrder.AppointmentId} not found.");
+
+        labOrder.Appointment = appointment;
         labOrder.OrderDate = DateTime.Now;
         labOrder.Status = "Pending";
         

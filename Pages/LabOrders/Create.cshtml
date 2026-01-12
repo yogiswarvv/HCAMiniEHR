@@ -15,22 +15,21 @@
                 </div>
                 <div class="card-body p-4">
                     <form method="post">
-                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-
-                        <div class="mb-3">
-                            <label asp-for="LabOrder.AppointmentId" class="form-label">Appointment</label>
-                            <select asp-for="LabOrder.AppointmentId" asp-items="Model.Appointments" class="form-select">
-                                <option value="">-- Select Appointment --</option>
-                            </select>
-                            <span asp-validation-for="LabOrder.AppointmentId" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="LabOrder.TestName" class="form-label">Test Name</label>
-                            <input asp-for="LabOrder.TestName" class="form-control" 
-                                   placeholder="e.g., Complete Blood Count (CBC)" />
-                            <span asp-validation-for="LabOrder.TestName" class="text-danger"></span>
-                            <div class="form-text text-muted">
+                                                <div asp-validation-summary="All" class="alert alert-danger"></div>
+                        
+                                                <div class="mb-3">
+                                                    <label asp-for="AppointmentId" class="form-label">Appointment</label>
+                                                    <select asp-for="AppointmentId" asp-items="Model.Appointments" class="form-select">
+                                                        <option value="">-- Select Appointment --</option>
+                                                    </select>
+                                                    <span asp-validation-for="AppointmentId" class="text-danger"></span>
+                                                </div>
+                        
+                                                <div class="mb-3">
+                                                    <label asp-for="TestName" class="form-label">Test Name</label>
+                                                    <input asp-for="TestName" class="form-control"
+                                                           placeholder="e.g., Complete Blood Count (CBC)" />
+                                                    <span asp-validation-for="TestName" class="text-danger"></span>                            <div class="form-text text-muted">
                                 <small>Common tests: CBC, Lipid Panel, HbA1c, Thyroid Function, X-Ray, MRI</small>
                             </div>
                         </div>

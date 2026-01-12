@@ -10,6 +10,7 @@ public class LabOrder
     public int LabOrderId { get; set; }
 
     [Required]
+    [Range(1, int.MaxValue, ErrorMessage = "Please select an appointment.")]
     public int AppointmentId { get; set; }
 
     [Required]

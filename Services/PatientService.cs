@@ -61,9 +61,17 @@ public class PatientService
 
     public async Task DeletePatientAsync(int id)
     {
-        var patient = await _repository.GetByIdAsync(id);
+        var patient = await _context.Patients
+            .Include(p => p.Appointments)
+            .FirstOrDefaultAsync(p => p.PatientId == id);
+
         if (patient == null)
             throw new InvalidOperationException($"Patient with ID {id} not found.");
+
+        if (patient.Appointments.Any(a => a.AppointmentDate.Date >= DateTime.Now.Date))
+        {
+            throw new InvalidOperationException("This patient cannot be deleted because they have upcoming appointments.");
+        }
 
         await _repository.DeleteAsync(id);
     }

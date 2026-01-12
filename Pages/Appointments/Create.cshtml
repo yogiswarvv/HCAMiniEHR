@@ -39,9 +39,11 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="DoctorName" class="form-label">Doctor Name</label>
-                            <input asp-for="DoctorName" class="form-control" placeholder="Dr. Smith" />
-                            <span asp-validation-for="DoctorName" class="text-danger"></span>
+                            <label asp-for="DoctorId" class="form-label">Doctor</label>
+                            <select asp-for="DoctorId" asp-items="Model.Doctors" class="form-select">
+                                <option value="">-- Select Doctor --</option>
+                            </select>
+                            <span asp-validation-for="DoctorId" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
@@ -49,8 +51,6 @@
                             <textarea asp-for="Reason" class="form-control" rows="3" placeholder="Enter reason for appointment"></textarea>
                             <span asp-validation-for="Reason" class="text-danger"></span>
                         </div>
-
-                       
 
                         <div class="d-flex justify-content-between mt-4">
                             <a asp-page="Index" class="btn btn-secondary">
@@ -69,4 +69,36 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var dateInput = document.getElementById('AppointmentDate');
+            var timeInput = document.getElementById('AppointmentTime');
+
+            var today = new Date();
+            var month = ('0' + (today.getMonth() + 1)).slice(-2);
+            var day = ('0' + today.getDate()).slice(-2);
+            var todayString = today.getFullYear() + '-' + month + '-' + day;
+            
+            dateInput.setAttribute('min', todayString);
+
+            function updateMinTime() {
+                var selectedDate = new Date(dateInput.value);
+                var now = new Date();
+
+                if (selectedDate.toDateString() === now.toDateString()) {
+                    var hours = ('0' + now.getHours()).slice(-2);
+                    var minutes = ('0' + now.getMinutes()).slice(-2);
+                    var currentTime = hours + ':' + minutes;
+                    timeInput.setAttribute('min', currentTime);
+                } else {
+                    timeInput.removeAttribute('min');
+                }
+            }
+
+            dateInput.addEventListener('change', updateMinTime);
+            
+            // Initial check
+            updateMinTime();
+        });
+    </script>
 }

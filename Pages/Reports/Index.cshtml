@@ -122,18 +122,17 @@
         </div>
     </div>
 
-    <!-- Report 3: Appointments by Month -->
+    <!-- Report 3: Doctor Productivity -->
     <div class="card glass-card shadow-sm mb-4">
         <div class="card-header bg-primary text-white">
             <h4 class="mb-0">
-                <i class="bi bi-calendar3 me-2"></i>Appointments Summary by Month
+                <i class="bi bi-people-fill me-2"></i>Doctor Productivity
             </h4>
-            
         </div>
         <div class="card-body">
-            @if (!Model.AppointmentsByMonth.Any())
+            @if (!Model.DoctorProductivity.Any())
             {
-                <p class="text-muted mb-0">No appointment data available.</p>
+                <p class="text-muted mb-0">No doctor productivity data available.</p>
             }
             else
             {
@@ -141,53 +140,31 @@
                     <table class="table table-hover mb-0">
                         <thead>
                             <tr>
-                                <th>Month</th>
+                                <th>Doctor Name</th>
+                                <th>Specialization</th>
                                 <th>Total Appointments</th>
-                                <th>Scheduled</th>
-                                <th>Completed</th>
-                                <th>Cancelled</th>
-                                <th>Completion Rate</th>
+                                <th>Total Lab Orders</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var month in Model.AppointmentsByMonth)
+                            @foreach (var doctor in Model.DoctorProductivity)
                             {
-                                var completionRate = month.TotalAppointments > 0 
-                                    ? (month.CompletedCount * 100.0 / month.TotalAppointments) 
-                                    : 0;
-                                
                                 <tr>
-                                    <td><strong>@month.MonthName</strong></td>
+                                    <td><strong>@doctor.DoctorName</strong></td>
+                                    <td>@doctor.Specialization</td>
                                     <td>
-                                        <span class="badge bg-info">@month.TotalAppointments</span>
+                                        <span class="badge bg-info">@doctor.TotalAppointments</span>
                                     </td>
                                     <td>
-                                        <span class="badge bg-success">@month.ScheduledCount</span>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-secondary">@month.CompletedCount</span>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-danger">@month.CancelledCount</span>
-                                    </td>
-                                    <td>
-                                        <div class="progress" style="height: 20px; background: rgba(255,255,255,0.1);">
-                                            <div class="progress-bar" role="progressbar" 
-                                                 style="width: @completionRate%" 
-                                                 aria-valuenow="@completionRate" aria-valuemin="0" aria-valuemax="100">
-                                                @completionRate.ToString("F1")%
-                                            </div>
-                                        </div>
+                                        <span class="badge bg-secondary">@doctor.TotalLabOrders</span>
                                     </td>
                                 </tr>
                             }
                         </tbody>
                     </table>
                 </div>
-                <div class="mt-3">
-                    <span class="badge bg-primary">Total Months: @Model.AppointmentsByMonth.Count()</span>
-                </div>
             }
         </div>
     </div>
 </div>
+

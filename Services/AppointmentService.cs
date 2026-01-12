@@ -1,4 +1,4 @@
-using HCAMiniEHR.Data;
+﻿using HCAMiniEHR.Data;
 using HCAMiniEHR.Data.Repositories;
 using HCAMiniEHR.Models;
 using Microsoft.EntityFrameworkCore;
@@ -48,44 +48,73 @@ public class AppointmentService
 
     // Create appointment using STORED PROCEDURE
     public async Task<int> CreateAppointmentUsingStoredProcAsync(
-        int patientId, 
-        DateTime appointmentDate, 
-        TimeSpan appointmentTime, 
-        string doctorName, 
-        string? reason)
+    int patientId,
+    DateTime appointmentDate,
+    TimeSpan appointmentTime,
+    int doctorId,
+    string? reason)
     {
+        var existingAppointment = await _context.Appointments
+            .FirstOrDefaultAsync(a => a.DoctorId == doctorId &&
+                                      a.AppointmentDate.Date == appointmentDate.Date &&
+                                      a.AppointmentTime == appointmentTime);
+
+        if (existingAppointment != null)
+        {
+            throw new InvalidOperationException("An appointment already exists for this doctor at the specified time.");
+        }
+
         var patientIdParam = new SqlParameter("@PatientId", patientId);
-        var dateParam = new SqlParameter("@AppointmentDate", appointmentDate);
+        var dateParam = new SqlParameter("@AppointmentDate", appointmentDate.Date);
         var timeParam = new SqlParameter("@AppointmentTime", appointmentTime);
-        var doctorParam = new SqlParameter("@DoctorName", doctorName);
+        var doctorIdParam = new SqlParameter("@DoctorId", doctorId);
         var reasonParam = new SqlParameter("@Reason", (object?)reason ?? DBNull.Value);
+
         var newIdParam = new SqlParameter("@NewAppointmentId", System.Data.SqlDbType.Int)
         {
             Direction = System.Data.ParameterDirection.Output
         };
 
         await _context.Database.ExecuteSqlRawAsync(
-            "EXEC [Healthcare].[usp_CreateAppointment] @PatientId, @AppointmentDate, @AppointmentTime, @DoctorName, @Reason, @NewAppointmentId OUTPUT",
-            patientIdParam, dateParam, timeParam, doctorParam, reasonParam, newIdParam);
+            "EXEC [Healthcare].[usp_CreateAppointment] " +
+            "@PatientId, @AppointmentDate, @AppointmentTime, @DoctorId, @Reason, @NewAppointmentId OUTPUT",
+            patientIdParam,
+            dateParam,
+            timeParam,
+            doctorIdParam,
+            reasonParam,
+            newIdParam);
 
         return (int)newIdParam.Value;
     }
 
-    // Regular create method (without stored procedure)
+
     public async Task<Appointment> CreateAppointmentAsync(Appointment appointment)
     {
         // Validation
         if (appointment.AppointmentDate.Date < DateTime.Now.Date)
             throw new ArgumentException("Appointment date cannot be in the past.");
 
+        // 🔴 TEMPORARY: DoctorName still exists
         if (string.IsNullOrWhiteSpace(appointment.DoctorName))
             throw new ArgumentException("Doctor name is required.");
 
+        // 🟢 NEW: Doctor availability validation (STAGE 3)
+        if (appointment.DoctorId.HasValue)
+        {
+            var isAvailable = await _context.Doctors
+                .AnyAsync(d => d.DoctorId == appointment.DoctorId && d.IsAvailable);
+
+            if (!isAvailable)
+                throw new InvalidOperationException("Selected doctor is not available.");
+        }
+
         appointment.CreatedDate = DateTime.Now;
         appointment.Status = "Scheduled";
-        
+
         return await _repository.AddAsync(appointment);
     }
+
 
     public async Task UpdateAppointmentAsync(Appointment appointment)
     {

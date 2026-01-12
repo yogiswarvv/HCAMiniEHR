@@ -20,8 +20,8 @@ public class IndexModel : PageModel
     // Report 2: Patients Without Follow-Up
     public IEnumerable<PatientWithoutFollowUpReport> PatientsWithoutFollowUp { get; set; } = new List<PatientWithoutFollowUpReport>();
 
-    // Report 3: Appointments by Month
-    public IEnumerable<AppointmentsByMonthReport> AppointmentsByMonth { get; set; } = new List<AppointmentsByMonthReport>();
+    // Report 3: Doctor Productivity
+    public IEnumerable<DoctorProductivityReport> DoctorProductivity { get; set; } = new List<DoctorProductivityReport>();
 
     public async Task OnGetAsync()
     {
@@ -38,7 +38,7 @@ public class IndexModel : PageModel
                 PatientName = lo.Appointment.Patient.FirstName + " " + lo.Appointment.Patient.LastName,
                 OrderDate = lo.OrderDate,
                 AppointmentDate = lo.Appointment.AppointmentDate,
-                DoctorName = lo.Appointment.DoctorName
+                DoctorName = lo.Appointment.Doctor.FirstName + " " + lo.Appointment.Doctor.LastName
             })
             .ToListAsync();
 
@@ -62,20 +62,20 @@ public class IndexModel : PageModel
             .OrderBy(p => p.PatientName)
             .ToListAsync();
 
-        // Report 3: Appointments by Month using LINQ (GroupBy, Select, OrderByDescending)
-        AppointmentsByMonth = await _context.Appointments
-            .GroupBy(a => new { a.AppointmentDate.Year, a.AppointmentDate.Month })
-            .Select(g => new AppointmentsByMonthReport
+        // Report 3: Doctor Productivity using LINQ (GroupBy, Select, OrderByDescending)
+        DoctorProductivity = await _context.Doctors
+            .Include(d => d.Appointments)
+                .ThenInclude(a => a.LabOrders)
+            .Select(d => new DoctorProductivityReport
             {
-                Year = g.Key.Year,
-                Month = g.Key.Month,
-                TotalAppointments = g.Count(),
-                ScheduledCount = g.Count(a => a.Status == "Scheduled"),
-                CompletedCount = g.Count(a => a.Status == "Completed"),
-                CancelledCount = g.Count(a => a.Status == "Cancelled")
+                DoctorId = d.DoctorId,
+                DoctorName = d.FirstName + " " + d.LastName,
+                Specialization= d.Specialization,
+                TotalAppointments = d.Appointments.Count,
+                TotalLabOrders = d.Appointments.SelectMany(a => a.LabOrders).Count()
             })
-            .OrderByDescending(r => r.Year)
-            .ThenByDescending(r => r.Month)
+            .OrderByDescending(r => r.TotalAppointments)
+            .ThenBy(r => r.DoctorName)
             .ToListAsync();
     }
 }
@@ -101,14 +101,12 @@ public class PatientWithoutFollowUpReport
     public int TotalAppointments { get; set; }
 }
 
-public class AppointmentsByMonthReport
+public class DoctorProductivityReport
 {
-    public int Year { get; set; }
-    public int Month { get; set; }
+    public int DoctorId { get; set; }
+    public string DoctorName { get; set; } = string.Empty;
+    public string? Specialization{ get; set; }
     public int TotalAppointments { get; set; }
-    public int ScheduledCount { get; set; }
-    public int CompletedCount { get; set; }
-    public int CancelledCount { get; set; }
-
-    public string MonthName => new DateTime(Year, Month, 1).ToString("MMMM yyyy");
+    public int TotalLabOrders { get; set; }
 }
+

@@ -13,12 +13,12 @@ public class Appointment
     public int PatientId { get; set; }
 
     [Required]
+    //[FutureDate]
     public DateTime AppointmentDate { get; set; }
 
     [Required]
     public TimeSpan AppointmentTime { get; set; }
 
-    [Required]
     [MaxLength(100)]
     public string DoctorName { get; set; } = string.Empty;
 
@@ -35,4 +35,9 @@ public class Appointment
     public Patient Patient { get; set; } = null!;
 
     public ICollection<LabOrder> LabOrders { get; set; } = new List<LabOrder>();
+    public int? DoctorId { get; set; }
+
+    [ForeignKey("DoctorId")]
+    public Doctor? Doctor { get; set; }
+
 }
