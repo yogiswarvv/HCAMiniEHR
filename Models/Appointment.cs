@@ -1,3 +1,4 @@
+using HCAMiniEHR.DTOs;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
