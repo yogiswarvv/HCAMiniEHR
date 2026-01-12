@@ -1,4 +1,4 @@
-using HCAMiniEHR.Models;
+using HCAMiniEHR.DTOs;
 using HCAMiniEHR.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -13,10 +13,10 @@ public class IndexModel : PageModel
         _patientService = patientService;
     }
 
-    public IEnumerable<Patient> Patients { get; set; } = new List<Patient>();
+    public List<PatientListDto> Patients { get; set; } = new();
 
     public async Task OnGetAsync()
     {
-        Patients = await _patientService.GetAllPatientsAsync();
+        Patients = await _patientService.GetPatientListAsync();
     }
 }

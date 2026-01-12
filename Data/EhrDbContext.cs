@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using HCAMiniEHR.Models;
-using HCAMiniEHR.DTOs;
 
 namespace HCAMiniEHR.Data;
 

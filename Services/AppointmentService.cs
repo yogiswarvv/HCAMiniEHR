@@ -3,6 +3,7 @@ using HCAMiniEHR.Data.Repositories;
 using HCAMiniEHR.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
+using HCAMiniEHR.DTOs;
 
 namespace HCAMiniEHR.Services;
 
@@ -103,5 +104,24 @@ public class AppointmentService
     public async Task<bool> AppointmentExistsAsync(int id)
     {
         return await _repository.ExistsAsync(id);
+    }
+    public async Task<List<AppointmentListDto>> GetAppointmentListAsync()
+    {
+        return await _context.Appointments
+            .Select(a => new AppointmentListDto
+            {
+                AppointmentId = a.AppointmentId,
+                AppointmentDate = a.AppointmentDate,
+                AppointmentTime = a.AppointmentTime,
+                DoctorName = a.DoctorName,
+                Reason = a.Reason,
+                Status = a.Status,
+
+                PatientName = a.Patient.FirstName + " " + a.Patient.LastName,
+                LabOrderCount = a.LabOrders.Count()
+            })
+            .OrderByDescending(a => a.AppointmentDate)
+            .ThenBy(a => a.AppointmentTime)
+            .ToListAsync();
     }
 }

@@ -1,7 +1,8 @@
 using HCAMiniEHR.Data;
 using HCAMiniEHR.Data.Repositories;
-using HCAMiniEHR.DTOs;
+using HCAMiniEHR.Models;
 using Microsoft.EntityFrameworkCore;
+using HCAMiniEHR.DTOs;
 
 namespace HCAMiniEHR.Services;
 
@@ -92,5 +93,24 @@ public class LabOrderService
     public async Task DeleteLabOrderAsync(int id)
     {
         await _repository.DeleteAsync(id);
+    }
+
+    public async Task<List<LabOrderListDto>> GetLabOrderListAsync()
+    {
+        return await _context.LabOrders
+            .Select(l => new LabOrderListDto
+            {
+                LabOrderId = l.LabOrderId,
+                TestName = l.TestName,
+                Status = l.Status,
+                OrderDate = l.OrderDate,
+                Results = l.Results,
+
+                AppointmentDate = l.Appointment.AppointmentDate,
+                PatientName = l.Appointment.Patient.FirstName + " " +
+                              l.Appointment.Patient.LastName
+            })
+            .OrderByDescending(l => l.OrderDate)
+            .ToListAsync();
     }
 }

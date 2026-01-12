@@ -1,8 +1,6 @@
-using HCAMiniEHR.Models;
+using HCAMiniEHR.DTOs;
 using HCAMiniEHR.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HCAMiniEHR.Pages.Appointments;
 
@@ -15,10 +13,10 @@ public class IndexModel : PageModel
         _appointmentService = appointmentService;
     }
 
-    public IEnumerable<Appointment> Appointments { get; set; } = new List<Appointment>();
+    public List<AppointmentListDto> Appointments { get; set; } = new();
 
     public async Task OnGetAsync()
     {
-        Appointments = await _appointmentService.GetAllAppointmentsAsync();
+        Appointments = await _appointmentService.GetAppointmentListAsync();
     }
 }

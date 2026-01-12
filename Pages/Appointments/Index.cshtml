@@ -52,13 +52,17 @@
                             {
                                 <tr>
                                     <td>@appointment.AppointmentId</td>
+
+                                    <!-- DTO FIELD -->
                                     <td>
-                                        <strong>@appointment.Patient.FullName</strong>
+                                        <strong>@appointment.PatientName</strong>
                                     </td>
+
                                     <td>@appointment.AppointmentDate.ToString("MM/dd/yyyy")</td>
                                     <td>@appointment.AppointmentTime.ToString(@"hh\:mm")</td>
                                     <td>@appointment.DoctorName</td>
                                     <td>@appointment.Reason</td>
+
                                     <td>
                                         @if (appointment.Status == "Scheduled")
                                         {
@@ -73,16 +77,20 @@
                                             <span class="badge bg-danger">@appointment.Status</span>
                                         }
                                     </td>
+
+                                    <!-- DTO FIELD -->
                                     <td>
-                                        <span class="badge bg-info">@appointment.LabOrders.Count</span>
+                                        <span class="badge bg-info">@appointment.LabOrderCount</span>
                                     </td>
+
                                     <td>
                                         <div class="btn-group btn-group-sm" role="group">
-                                            <a asp-page="Details" asp-route-id="@appointment.AppointmentId" 
+                                            <a asp-page="Details" asp-route-id="@appointment.AppointmentId"
                                                class="btn btn-outline-primary" title="View Details">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <a asp-page="/LabOrders/Create" asp-route-appointmentId="@appointment.AppointmentId" 
+
+                                            <a asp-page="/LabOrders/Create" asp-route-appointmentId="@appointment.AppointmentId"
                                                class="btn btn-outline-success" title="Add Lab Order">
                                                 <i class="bi bi-clipboard-plus"></i>
                                             </a>
@@ -91,6 +99,7 @@
                                 </tr>
                             }
                         </tbody>
+
                     </table>
                 </div>
             </div>

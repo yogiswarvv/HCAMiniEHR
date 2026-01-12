@@ -1,8 +1,7 @@
-using HCAMiniEHR.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HCAMiniEHR.DTOs;
+namespace HCAMiniEHR.Models;
 
 [Table("LabOrder", Schema = "Healthcare")]
 public class LabOrder
