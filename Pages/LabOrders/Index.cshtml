@@ -52,8 +52,8 @@
                                 <tr>
                                     <td>@order.LabOrderId</td>
                                     <td><strong>@order.TestName</strong></td>
-                                    <td>@order.Appointment.Patient.FullName</td>
-                                    <td>@order.Appointment.AppointmentDate.ToString("MM/dd/yyyy")</td>
+                                    <td>@order.PatientName</td>
+                                    <td>@order.AppointmentDate.ToString("MM/dd/yyyy")</td>
                                     <td>@order.OrderDate.ToString("MM/dd/yyyy")</td>
                                     <td>
                                         @if (order.Status == "Pending")

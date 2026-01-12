@@ -13,10 +13,11 @@ public class IndexModel : PageModel
         _labOrderService = labOrderService;
     }
 
-    public IEnumerable<LabOrder> LabOrders { get; set; } = new List<LabOrder>();
+    // DTO-based property (ONLY ONE)
+    public List<LabOrderListDto> LabOrders { get; set; } = new();
 
     public async Task OnGetAsync()
     {
-        LabOrders = await _labOrderService.GetAllLabOrdersAsync();
+        LabOrders = await _labOrderService.GetLabOrderListAsync();
     }
 }

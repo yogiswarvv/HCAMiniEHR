@@ -15,6 +15,7 @@ builder.Services.AddDbContext<EhrDbContext>(options =>
 builder.Services.AddScoped<PatientService>();
 builder.Services.AddScoped<AppointmentService>();
 builder.Services.AddScoped<LabOrderService>();
+builder.Services.AddScoped<DoctorService>();
 
 
 var app = builder.Build();

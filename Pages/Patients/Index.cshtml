@@ -43,28 +43,32 @@
                             {
                                 <tr>
                                     <td>@patient.PatientId</td>
+
                                     <td>
                                         <strong>@patient.FullName</strong>
                                     </td>
+
                                     <td>@patient.DateOfBirth.ToString("MM/dd/yyyy")</td>
                                     <td>@patient.Gender</td>
                                     <td>@patient.Phone</td>
                                     <td>@patient.Email</td>
+
                                     <td>
-                                        <span class="badge bg-info">@patient.Appointments.Count</span>
+                                        <span class="badge bg-info">@patient.AppointmentCount</span>
                                     </td>
+
                                     <td>
                                         <div class="btn-group btn-group-sm" role="group">
-                                            <a asp-page="Details" asp-route-id="@patient.PatientId" 
-                                               class="btn btn-outline-primary" title="View Details">
+                                            <a asp-page="Details" asp-route-id="@patient.PatientId"
+                                               class="btn btn-outline-primary">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <a asp-page="Edit" asp-route-id="@patient.PatientId" 
-                                               class="btn btn-outline-warning" title="Edit">
+                                            <a asp-page="Edit" asp-route-id="@patient.PatientId"
+                                               class="btn btn-outline-warning">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <a asp-page="Delete" asp-route-id="@patient.PatientId" 
-                                               class="btn btn-outline-danger" title="Delete">
+                                            <a asp-page="Delete" asp-route-id="@patient.PatientId"
+                                               class="btn btn-outline-danger">
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                         </div>

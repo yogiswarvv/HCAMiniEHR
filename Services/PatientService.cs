@@ -2,6 +2,7 @@ using HCAMiniEHR.Data;
 using HCAMiniEHR.Data.Repositories;
 using HCAMiniEHR.Models;
 using Microsoft.EntityFrameworkCore;
+using HCAMiniEHR.DTOs;
 
 namespace HCAMiniEHR.Services;
 
@@ -60,9 +61,17 @@ public class PatientService
 
     public async Task DeletePatientAsync(int id)
     {
-        var patient = await _repository.GetByIdAsync(id);
+        var patient = await _context.Patients
+            .Include(p => p.Appointments)
+            .FirstOrDefaultAsync(p => p.PatientId == id);
+
         if (patient == null)
             throw new InvalidOperationException($"Patient with ID {id} not found.");
+
+        if (patient.Appointments.Any(a => a.AppointmentDate.Date >= DateTime.Now.Date))
+        {
+            throw new InvalidOperationException("This patient cannot be deleted because they have upcoming appointments.");
+        }
 
         await _repository.DeleteAsync(id);
     }
@@ -70,5 +79,22 @@ public class PatientService
     public async Task<bool> PatientExistsAsync(int id)
     {
         return await _repository.ExistsAsync(id);
+    }
+
+    public async Task<List<PatientListDto>> GetPatientListAsync()
+    {
+        return await _context.Patients
+            .Select(p => new PatientListDto
+            {
+                PatientId = p.PatientId,
+                FullName = p.FirstName + " " + p.LastName,
+                DateOfBirth = p.DateOfBirth,
+                Gender = p.Gender,
+                Phone = p.Phone,
+                Email = p.Email,
+                AppointmentCount = p.Appointments.Count()
+            })
+            .OrderBy(p => p.FullName)
+            .ToListAsync();
     }
 }

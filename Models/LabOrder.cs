@@ -1,8 +1,7 @@
-using HCAMiniEHR.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HCAMiniEHR.DTOs;
+namespace HCAMiniEHR.Models;
 
 [Table("LabOrder", Schema = "Healthcare")]
 public class LabOrder
@@ -11,6 +10,7 @@ public class LabOrder
     public int LabOrderId { get; set; }
 
     [Required]
+    [Range(1, int.MaxValue, ErrorMessage = "Please select an appointment.")]
     public int AppointmentId { get; set; }
 
     [Required]
