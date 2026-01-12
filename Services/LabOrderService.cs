@@ -1,6 +1,6 @@
 using HCAMiniEHR.Data;
 using HCAMiniEHR.Data.Repositories;
-using HCAMiniEHR.Models;
+using HCAMiniEHR.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace HCAMiniEHR.Services;

@@ -1,4 +1,4 @@
-using HCAMiniEHR.Models;
+using HCAMiniEHR.DTOs;
 using HCAMiniEHR.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
