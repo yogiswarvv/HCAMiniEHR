@@ -1,0 +1,341 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<!-- Dashboard Grid Layout -->
+<div class="dashboard-grid">
+    <!-- Welcome Banner -->
+    <div class="welcome-banner glass-card">
+        <div class="welcome-content">
+            <div>
+                <h2>Welcome to HCA Mini EHR</h2>
+                <p class="text-muted mb-0">Healthcare Management System - Capstone Project</p>
+            </div>
+        </div>
+        <div class="welcome-stats">
+            <div class="stat-item">
+                <i class="bi bi-calendar-check"></i>
+                <span>@Model.TotalAppointments Total Appointments</span>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Statistics Cards Grid -->
+    <div class="stats-grid">
+        <div class="stat-card glass-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #6366f1, #06b6d4);">
+                <i class="bi bi-people-fill"></i>
+            </div>
+            <div class="stat-details">
+                <h3>@Model.TotalPatients</h3>
+                <p>Total Patients</p>
+                <a asp-page="/Patients/Index" class="stat-link">View All <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="stat-card glass-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                <i class="bi bi-calendar-check-fill"></i>
+            </div>
+            <div class="stat-details">
+                <h3>@Model.UpcomingAppointments</h3>
+                <p>Upcoming</p>
+                <a asp-page="/Appointments/Index" class="stat-link">View All <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="stat-card glass-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                <i class="bi bi-clipboard-pulse-fill"></i>
+            </div>
+            <div class="stat-details">
+                <h3>@Model.PendingLabOrders</h3>
+                <p>Pending Labs</p>
+                <a asp-page="/LabOrders/Index" class="stat-link">View All <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="stat-card glass-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+                <i class="bi bi-graph-up-arrow"></i>
+            </div>
+            <div class="stat-details">
+                <h3>@Model.TotalAppointments</h3>
+                <p>Total Appointments</p>
+                <a asp-page="/Reports/Index" class="stat-link">View Reports <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions Section -->
+    <div class="quick-actions-section">
+        <h3 class="section-title">
+            <i class="bi bi-lightning-charge-fill me-2"></i>Quick Actions
+        </h3>
+        <div class="quick-actions-grid">
+            <a asp-page="/Patients/Create" class="action-card glass-card">
+                <div class="action-icon">
+                    <i class="bi bi-person-plus-fill"></i>
+                </div>
+                <div class="action-content">
+                    <h4>Add Patient</h4>
+                    <p>Register a new patient</p>
+                </div>
+                <i class="bi bi-arrow-right action-arrow"></i>
+            </a>
+
+            <a asp-page="/Appointments/Create" class="action-card glass-card">
+                <div class="action-icon">
+                    <i class="bi bi-calendar-plus-fill"></i>
+                </div>
+                <div class="action-content">
+                    <h4>Schedule Appointment</h4>
+                    <p>Book a new appointment</p>
+                </div>
+                <i class="bi bi-arrow-right action-arrow"></i>
+            </a>
+
+            <a asp-page="/LabOrders/Create" class="action-card glass-card">
+                <div class="action-icon">
+                    <i class="bi bi-clipboard-plus-fill"></i>
+                </div>
+                <div class="action-content">
+                    <h4>Create Lab Order</h4>
+                    <p>Order laboratory tests</p>
+                </div>
+                <i class="bi bi-arrow-right action-arrow"></i>
+            </a>
+
+            <a asp-page="/Reports/Index" class="action-card glass-card">
+                <div class="action-icon">
+                    <i class="bi bi-file-earmark-bar-graph-fill"></i>
+                </div>
+                <div class="action-content">
+                    <h4>View Reports</h4>
+                    <p>Analytics and insights</p>
+                </div>
+                <i class="bi bi-arrow-right action-arrow"></i>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<style>
+.dashboard-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.welcome-banner {
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(6, 182, 212, 0.1));
+}
+
+.welcome-content {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.welcome-icon {
+    font-size: 3.5rem;
+    background: var(--color-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: iconPulse 2s ease-in-out infinite;
+}
+
+.welcome-content h2 {
+    margin: 0;
+    font-size: 1.75rem;
+}
+
+.welcome-stats {
+    display: flex;
+    gap: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--glass-border);
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-text-secondary);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.stat-card {
+    padding: 1.5rem;
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+.stat-details {
+    flex: 1;
+}
+
+.stat-details h3 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0 0 0.25rem 0;
+}
+
+.stat-details p {
+    color: var(--color-text-muted);
+    margin: 0 0 0.75rem 0;
+    font-size: 0.9rem;
+}
+
+.stat-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: color var(--transition-fast);
+}
+
+.stat-link:hover {
+    color: var(--color-text-primary);
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+}
+
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.action-card {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all var(--transition-normal);
+}
+
+.action-card:hover {
+    transform: translateX(8px);
+}
+
+.action-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-sm);
+    background: var(--color-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+.action-content {
+    flex: 1;
+}
+
+.action-content h4 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.action-content p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.action-arrow {
+    color: var(--color-text-muted);
+    font-size: 1.25rem;
+    transition: transform var(--transition-fast);
+}
+
+.action-card:hover .action-arrow {
+    transform: translateX(4px);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+}
+
+.feature-card {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    background: var(--color-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.feature-card h5 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.feature-card p {
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+@@media (max-width: 768px) {
+    .stats-grid,
+    .quick-actions-grid,
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .welcome-content {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+</style>

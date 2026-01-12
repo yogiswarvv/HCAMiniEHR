@@ -1,0 +1,56 @@
+﻿@page
+@model PrivacyModel
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+<div class="container mt-4 fade-in">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card glass-card">
+                <div class="card-header bg-primary">
+                    <h3 class="mb-0">
+                        <i class="bi bi-shield-lock-fill me-2"></i>@ViewData["Title"]
+                    </h3>
+                </div>
+                <div class="card-body p-5">
+                    <h4 class="mb-4">Healthcare Data Privacy</h4>
+                    <p class="lead text-muted">
+                        HCA Mini EHR is committed to protecting the privacy and security of patient health information.
+                    </p>
+
+                    <hr class="my-4" style="border-color: rgba(255,255,255,0.1);" />
+
+                    <h5 class="mt-4 mb-3">Data Collection</h5>
+                    <p class="text-muted">
+                        This application collects and stores patient information including personal details, medical appointments, 
+                        and laboratory test results in accordance with healthcare regulations and best practices.
+                    </p>
+
+                    <h5 class="mt-4 mb-3">Data Security</h5>
+                    <p class="text-muted">
+                        All data is stored securely in a SQL Server database with appropriate access controls and encryption. 
+                        The application uses Entity Framework Core for secure data access and implements audit logging for all changes.
+                    </p>
+
+                    <h5 class="mt-4 mb-3">HIPAA Compliance</h5>
+                    <p class="text-muted">
+                        This is a demonstration project for educational purposes. In a production environment, additional 
+                        security measures and HIPAA compliance protocols would be implemented.
+                    </p>
+
+                    <h5 class="mt-4 mb-3">Contact Information</h5>
+                    <p class="text-muted">
+                        For questions about this privacy policy or data handling practices, please contact your system administrator.
+                    </p>
+
+                    <div class="mt-5 text-center">
+                        <a asp-page="/Index" class="btn btn-primary">
+                            <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
